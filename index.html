@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>FieldVal Rules Example</title>
+
+	<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="bower_components/fieldval/fieldval.js"></script>
+	<script type="text/javascript" src="bower_components/fieldval-ui/fieldval-ui.js"></script>
+	<script type="text/javascript" src="bower_components/fieldval-rules/fieldval-rules.js"></script>
+
+	<script type="text/javascript" src="bower_components/fieldval-ui/themes/minimal.js"></script>
+	<link rel="stylesheet" type="text/css" href="bower_components/fieldval-ui/themes/minimal.css">
+	<style>
+		body {
+			font-family: sans-serif;
+		}
+		.fv_field{
+			margin-bottom: 5px;
+		}
+		.submit_button{
+			-webkit-appearance: none;
+			border: none;
+			outline: none;
+			min-height: 30px;
+			font-size: 16px;
+			font-weight: bold;
+			color: white;
+			background-color: #5a3a77;
+			cursor: pointer;
+			margin: 0px;
+		}
+		.submit_button:active{
+			background-color: #9d4479;
+		}
+	</style>
+</head>
+<body>
+	<script type="text/javascript">
+
+		$(document).ready(function() {
+
+			var rule_json = {
+				"type": "object",
+				"fields":[
+					{
+						"name": "my_email",
+						"display_name": "My Email",
+						"type": "email"
+					},{
+						"name": "my_integer",
+						"display_name": "My Integer",
+						"type": "number",
+						"integer": true
+					},{
+						"name": "optional_text",
+						"display_name": "Optional Text",
+						"type": "text",
+						"required": false,
+						"min_length": 10,
+						"ui_type": "textarea"
+					},{
+						"name": "secret_key",
+						"display_name": "Secret Key",
+						"type": "text",
+						"min_length": 8,
+						"ui_type": "password"
+					}
+				]
+			};
+
+			//Create an FVRule instance
+			var rule = new FVRule();
+
+			/* Initialize the FVRule with your JSON. If your rule has any 
+			 * errors, rule.init would describe them in a FieldVal error 
+			 * structure, otherwise it returns null. */
+			var rule_error = rule.init(rule_json); 
+
+			//Build a FieldVal UI form from the rule
+			var form = rule.create_form();
+
+			//Add an on_submit callback 
+			form.on_submit(function(value){
+
+				//Validate the output from the form against the rule
+			    rule.validate(value, function(validation_error){
+			    
+			    	/* Insert any error (or null) into the form. 
+			         * Calling form.error with null will clear 
+			         * existing errors. */
+			        form.error(validation_error);
+			        
+			        if(validation_error){
+			        
+			            console.log(validation_error);
+			        
+			        } else {
+			        
+			        	/* There were no errors, proceed with using 
+			             * the value. */
+			            console.log(value);
+			            
+			        }
+			    });
+			});
+
+			/* Append a button to the form so that it can be submitted 
+			 * and then append the form to the body of the page. */
+			form.element.append(
+			    $("<button/>").addClass("submit_button").text("Submit")
+			).appendTo("body");
+		});
+	</script>
+</body>
+</html>
