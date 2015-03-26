@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "dependencies": {
     "jquery": "1.11.1",
-    "fieldval": "FieldVal/fieldval-js#develop",
-    "fieldval-ui": "FieldVal/fieldval-ui#develop",
-    "fieldval-rules": "FieldVal/fieldval-rules-js#develop_docs"
+    "fieldval": "0.4.1",
+    "fieldval-ui": "0.4.0",
+    "fieldval-rules": "0.4.0"
   },
   "private": true
 }
